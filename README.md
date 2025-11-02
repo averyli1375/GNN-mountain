@@ -1,7 +1,7 @@
-#Training a GNN to Recognize Mountain Peaks, a.k.a a shakespearean tragedy in parts
+# Training a GNN to Recognize Mountain Peaks, a.k.a a shakespearean tragedy in parts
 The goal of this onboarding project is to train a graph neural network to identify mountain peaks on synthetic data using Scikit-Learn. The mountains are synthetically generated, and all data generation code is contained within the tools.py file
 
-##Varied Hyperparameters
+## Varied Hyperparameters
 The inherent problem with these datasets is that the number of peaks is so much less than that which is not peaks, so most models eventually learn to simply classify everything as "not peak", which still yields a fairly decent accuracy. Therefore, the metric of interest to be improved is recall, which measures the percentage of true peaks that we actually labelled as peaks. However, precision is still important as well, as we can't mindlessly label every point as a peak.
 The baseline model evaluates on a test set as:
 ```
@@ -12,11 +12,11 @@ Precision: 0.0
 Recall: 0.0
 Accuracy if guessed all 0s: 0.95
 ```
-###Model Size/Epoch Number
+### Model Size/Epoch Number
 Model complexity can be improved by both adding nodes and increasing the depth of the model is a way to learn more information and prevent underfitting. Increasing number of epochs gives the model a chance to learn more, but also runs the risk of overfitting, so both metrics must be balanced to reach optimal state.
 However, changing either parameter does nothing for precision or recall, so both are not worth considering for now.
 
-###Weighting Scheme
+### Weighting Scheme
 Overweighting the minority class during training, especially with cross entropy loss, presents a unique approach at tackling the 0 recall problem. By counting the number of positive labels (peaks) and negative labels we weight the cross entropy loss with 
 ```
 weight = torch.tensor([1.0, (num_zeros/num_ones)**0.5], dtype=torch.float)
@@ -39,5 +39,5 @@ Accuracy if guessed all 0s: 0.95
 ```
 For two differently sized test sets, for sake of scalability. We see in the case of the 10x10, the model begins predicting peaks too much, with high recall but low precision. This can be adjusted with the exponent in the weighting scheme. Increasing the exponent yields very high recall but very low accuracy/precision, and the best number for the exponent is still yet to be determined.
 
-###Graph Weighting
+### Graph Weighting
 Both sci-kit and pytorch don't take negative weights as values, so currently all weights are calculated, then the smallest weight is subtracted from each one, so all are non-negative. Taking the absolute value also is another solution, though does not seem to be performing better.
