@@ -5,7 +5,7 @@ from scipy.sparse import csr_matrix
 def createDataset(size, mountains):
     tMap, peaks = createMap(size, mountains)
     print(tMap)
-    adjacency = csr_matrix(*createSparseAdjacency(tMap), shape=(size*size, size*size))
+    adjacency = csr_matrix(createSparseAdjacency(tMap), shape=(size*size, size*size))
     features = createFeatures(tMap)
     labels = createLabels(peaks, size)
     return adjacency, features, labels
@@ -21,7 +21,6 @@ def evalModel():
                                     random_state=42)
     print(f"Train accuracy: {float(np.mean(labels_pred == labels))}")
     print(sum(labels_pred))
-    model(*createDataset(size, mountains))
     #test_pred = model.predict(*testSet)
     #print(f"Test accuracy: {float(round(np.mean(testSet[2] == test_pred), 2))}")
 

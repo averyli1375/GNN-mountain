@@ -16,7 +16,7 @@ def createMap(size=100, mountains=20):
                 tMap[y][x] += height(x, y, x0, y0, size, A)
         peaks.append(y0*size+x0)
     cleandata = np.array(tMap)
-    noise = np.random.normal(0, 1, cleandata.shape)
+    noise = np.random.normal(0, 0.1, cleandata.shape)
     return cleandata + noise, peaks
 
 def createSparseAdjacency(tMap):
@@ -38,7 +38,7 @@ def createSparseAdjacency(tMap):
 
 def createFeatures(tMap):
     features = []
-    noise = np.random.normal(0, 1, tMap.shape)
+    noise = np.random.normal(0, 0.1, tMap.shape)
     humidity = noise + 0.3*tMap
     n = tMap.shape[0]
     for j in range(n):
@@ -55,3 +55,11 @@ def createLabels(peaks, n):
             else:
                 labels.append(0)
     return np.array(labels)
+
+if __name__ == "__main__":
+    tMap, peaks = createMap(3, 2)
+    print(tMap)
+    print(peaks)
+    weights, x = createSparseAdjacency(tMap)
+    print(weights)
+    print(createFeatures(tMap))
